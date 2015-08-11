@@ -24,17 +24,22 @@ jQuery(document).ready(function($){
 	}
 
 	function renderThumbsView(){
-		$thumbsContainer = $('<div>',{'class': 'thumbs clearfix'});
-		var images = dataModel.images,
-			$thumb;
+		// $thumbsContainer = $('<div>',{'class': 'thumbs clearfix'});
+		// var images = dataModel.images,
+		// 	$thumb;
 
-		images.forEach(function(image){
+		// images.forEach(function(image){
 
-			$thumb = $('<img>',{'src': image.medium, 'alt': image.caption});
-			$thumbsContainer.append($thumb);
-		});
+		// 	$thumb = $('<img>',{'src': image.medium, 'alt': image.caption});
+		// 	$thumbsContainer.append($thumb);
+		// });
 
-		$gallery.append($thumbsContainer);
+		// $gallery.append($thumbsContainer);
+
+		var thumbsHTML = Templates.thumbs(dataModel);
+			$gallery.html(thumbsHTML);
+
+		//alert(thumbHTML);
 	}
 
 	function addOverlayController(){
@@ -60,7 +65,7 @@ jQuery(document).ready(function($){
 	}
 
 	function addThumbsController(){
-		var $thumbs = $thumbsContainer.find('img');
+		var $thumbs = $gallery.find('img');
 
 		$thumbs.click(function(){
 			dataModel.currentIndex = $thumbs.index($(this));
@@ -71,35 +76,39 @@ jQuery(document).ready(function($){
 	}
 
 	function renderOverlayView(){
-		$overlay = $('<div>',{'class': 'overlay'});
+		// $overlay = $('<div>',{'class': 'overlay'});
 
-		var $imageContainer = $('<div>',{'class': 'image-container clearfix'}),
-			$figure = $('<figure>'),
-			$image = $('<img>'),
-			$figCaption = $('<figcaption>'),
-			$closeBtn = $('<div>',{'class': 'close-btn fa fa-close'}),
-			$nextBtn = $('<div>',{'class': 'next-btn fa fa-arrow-right'}),
-			$prevBtn = $('<div>',{'class': 'prev-btn fa fa-arrow-left'});
+		// var $imageContainer = $('<div>',{'class': 'image-container clearfix'}),
+		// 	$figure = $('<figure>'),
+		// 	$image = $('<img>'),
+		// 	$figCaption = $('<figcaption>'),
+		// 	$closeBtn = $('<div>',{'class': 'close-btn fa fa-close'}),
+		// 	$nextBtn = $('<div>',{'class': 'next-btn fa fa-arrow-right'}),
+		// 	$prevBtn = $('<div>',{'class': 'prev-btn fa fa-arrow-left'});
 
-		$figure.append($image, $figCaption, $closeBtn, $nextBtn, $prevBtn);
-		$imageContainer.append($figure);
-		$overlay.append($imageContainer);
+		// $figure.append($image, $figCaption, $closeBtn, $nextBtn, $prevBtn);
+		// $imageContainer.append($figure);
+		// $overlay.append($imageContainer);
 
+		$overlay = $(Templates.overlay());
 	}
 
 	
 
 	function loadImage(){
 		var image = dataModel.images[dataModel.currentIndex];
-
-		$overlay.find('img')
-		.css({'opacity':0})
-		.attr({'src':image.image,'alt': image.caption})
-		.load(function(){
-			$(this).unbind('load').velocity('fadeIn',{duration: 300})
-		});
-		$overlay.find('figcaption').html(image.caption);
-
+			// $image = $(Templates.image(image));
+		// $overlay.find('img')
+		// .css({'opacity':0})
+		// .attr({'src':image.image,'alt': image.caption})
+		// .load(function(){
+		// 	$(this).unbind('load').velocity('fadeIn',{duration: 300})
+		// });
+		// $overlay.find('figcaption').html(image.caption);
+		$overlay.find('figure').html(Templates.image(image));
+		$overlay.find('img').load(function(){
+			$(this).velocity('fadeIn',{duration:300});
+		})
 	}
 
 	function addOverlay(){
